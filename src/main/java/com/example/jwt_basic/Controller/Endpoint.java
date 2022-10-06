@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Endpoint {
 
-    @GetMapping("/v1")
+    @GetMapping("/v2")
     public String demoApi(){
         return "Demo";
     }
