@@ -13,18 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
     
-    @Bean
-    public SecurityFilterChain secFilterChain(HttpSecurity httpSecurity) throws Exception{
-        return httpSecurity.httpBasic()
-            .and()
-            .authorizeRequests()
-            .mvcMatchers("")
-            .hasAnyAuthority("read")
-            .anyRequest()
-            .authenticated()
-            .and()
-            .build();
-    }
+
 
     @Bean
     public UserDetailsService userDetailService() {
@@ -36,7 +25,7 @@ public class SecurityConfig {
 
         var u2 = User.withUsername("user2")
             .password(passwordEncoder().encode("456"))
-            .authorities("read")
+            .authorities("read", "write", "delete")
             .build();
 
         uds.createUser(u1);
@@ -49,5 +38,19 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSec) throws Exception{
+        return httpSec.httpBasic()
+            .and()
+            .authorizeRequests()
+            .mvcMatchers("/v/*", "/c/*")
+            .authenticated()
+            .anyRequest()
+            .permitAll()
+            .and()
+            .csrf().disable()
+            .build();
     }
 }
