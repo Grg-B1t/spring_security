@@ -12,8 +12,8 @@ import com.example.jwt_basic.Configuration.Security.Filter.ApiKeyFilter;
 @Configuration
 public class SecurityConfiguration {
 
-    //@Value("${the.very.very.very.secret}")
-    private String key = "secret";
+    @Value("${secret}")
+    private String key;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
